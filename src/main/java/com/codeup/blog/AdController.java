@@ -2,8 +2,7 @@ package com.codeup.blog;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class AdController {
@@ -25,6 +24,18 @@ public class AdController {
     public String search(Model model, @PathVariable String term) {
         model.addAttribute("ads", adDao.searchByTitle(term));
         return "ads/index";
+    }
+
+    @GetMapping("/ads/create")
+    public String showCreateForm(Model model) {
+        model.addAttribute("ad", new Ad());
+        return "ads/create";
+    }
+
+    @PostMapping("/ads/create")
+    public String create(@ModelAttribute Ad ad) {
+        adDao.save(ad);
+        return "redirect:/ads";
     }
 
 }
